@@ -1,14 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TodoList from "./TodoList";
 import { TodoData } from "../types/todoTypes";
 
 const Todo: React.FC = () => {
   const [todos, setTodos] = useState<TodoData[]>([]);
   const [todo, setTodo] = useState("");
+
+  // set todo to localStorage
+  const setTodoStore = (todos: TodoData[]) => {
+    const todoString = JSON.stringify(todos);
+    localStorage.setItem("todos", todoString);
+  };
+
+  // get items from localStorage
+  useEffect(() => {
+    const storeTodo = JSON.parse(localStorage.getItem("todos") || "[]");
+    setTodos(storeTodo);
+  }, []);
+  
   const handleAddTodo = () => {
     if (!todo) return;
-    const newTodo = [{ id: crypto.randomUUID(), completed: false, edit: false, todo }, ...todos];
+    const newTodo = [
+      { id: crypto.randomUUID(), completed: false, edit: false, todo },
+      ...todos,
+    ];
     setTodos(newTodo);
+    setTodoStore(newTodo);
     setTodo("");
   };
   return (
@@ -37,13 +54,23 @@ const Todo: React.FC = () => {
         {/* list of todos */}
         <div className="space-y-3 mt-5">
           <p className="font-bold text-xl border-b">Todo</p>
-          <TodoList task={false} todos={todos} setTodos={setTodos} />
+          <TodoList
+            task={false}
+            todos={todos}
+            setTodos={setTodos}
+            setTodoStore={setTodoStore}
+          />
         </div>
 
         {/* completed todo list  */}
         <div className="space-y-3 mt-5">
           <p className="font-bold text-xl border-b">Completed Todo</p>
-          <TodoList task={true} todos={todos} setTodos={setTodos} />
+          <TodoList
+            task={true}
+            todos={todos}
+            setTodos={setTodos}
+            setTodoStore={setTodoStore}
+          />
         </div>
       </div>
     </div>

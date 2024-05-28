@@ -5,10 +5,12 @@ interface Props {
   task: boolean;
   todos: TodoData[];
   setTodos: React.Dispatch<React.SetStateAction<TodoData[]>>;
+  setTodoStore: (todos: TodoData[]) => void;
 }
 
-const TodoList: React.FC<Props> = ({ task, todos, setTodos }) => {
+const TodoList: React.FC<Props> = ({ task, todos, setTodos, setTodoStore }) => {
   const [todo, setTodo] = useState("");
+  
   const handleEdit = (id: string) => {
     const oldTodos = [...todos];
     const editedTodos = oldTodos.map((ele) => {
@@ -18,6 +20,7 @@ const TodoList: React.FC<Props> = ({ task, todos, setTodos }) => {
       return ele;
     });
     setTodos(editedTodos);
+    setTodoStore(editedTodos);
   };
   const handleComplete = (id: string) => {
     const oldTodos = [...todos];
@@ -29,6 +32,7 @@ const TodoList: React.FC<Props> = ({ task, todos, setTodos }) => {
       return ele;
     });
     setTodos(editedTodos);
+    setTodoStore(editedTodos);
   };
   const handleSave = (id: string) => {
     const oldTodos = [...todos];
@@ -40,10 +44,12 @@ const TodoList: React.FC<Props> = ({ task, todos, setTodos }) => {
       return ele;
     });
     setTodos(editedTodos);
+    setTodoStore(editedTodos);
   };
   const handleDelete = (id: string) => {
     const updatedTodos = todos.filter((ele) => ele.id !== id);
     setTodos(updatedTodos);
+    setTodoStore(updatedTodos);
   };
   return (
     <>
@@ -73,11 +79,17 @@ const TodoList: React.FC<Props> = ({ task, todos, setTodos }) => {
                 Save
               </button>
             ) : (
-              <button onClick={() => handleEdit(ele.id)} className="bg-sky-600 btn">
+              <button
+                onClick={() => handleEdit(ele.id)}
+                className="bg-sky-600 btn"
+              >
                 Edit
               </button>
             )}
-            <button onClick={() => handleDelete(ele.id)} className="bg-red-600 btn">
+            <button
+              onClick={() => handleDelete(ele.id)}
+              className="bg-red-600 btn"
+            >
               Delete
             </button>
           </div>
