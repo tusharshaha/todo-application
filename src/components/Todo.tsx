@@ -17,7 +17,7 @@ const Todo: React.FC = () => {
     const storeTodo = JSON.parse(localStorage.getItem("todos") || "[]");
     setTodos(storeTodo);
   }, []);
-  
+
   const handleAddTodo = () => {
     if (!todo) return;
     const newTodo = [

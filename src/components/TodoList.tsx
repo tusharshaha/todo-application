@@ -10,7 +10,7 @@ interface Props {
 
 const TodoList: React.FC<Props> = ({ task, todos, setTodos, setTodoStore }) => {
   const [todo, setTodo] = useState("");
-  
+
   const handleEdit = (id: string) => {
     const oldTodos = [...todos];
     const editedTodos = oldTodos.map((ele) => {
